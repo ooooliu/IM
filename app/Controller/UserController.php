@@ -77,7 +77,10 @@ class UserController extends BaseController
     public function findUserById()
     {
         try {
-            return $this->userService->findUserById($this->request->input('id', 0));
+            return $this->userService->findUserById(
+                $this->request->input('app_id', 0),
+                $this->request->input('id', 0)
+            );
         } catch (\Exception $e) {
             return $e->getMessage();
         }
