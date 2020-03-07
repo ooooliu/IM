@@ -130,7 +130,7 @@ class WebSocketService extends BaseService
     }
 
     /**
-     * 发送消息
+     * 定向发送消息
      * @param int $to 接收者
      * @param array $data 消息体数据
      */
@@ -147,6 +147,10 @@ class WebSocketService extends BaseService
         }
     }
 
+    /**
+     * 发送在线通知
+     * @param array $data
+     */
     public function notice(array $data): void
     {
         $list = $this->redis->hGetAll($this->fdUserKey());
