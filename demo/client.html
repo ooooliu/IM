@@ -70,6 +70,9 @@
     var ws = null;
     var search = window.location.search;
     var token = getSearchString('token', search);
+    if (token === undefined) {
+        token = '';
+    }
 
     connect();
     function connect() {

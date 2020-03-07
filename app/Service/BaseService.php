@@ -32,8 +32,12 @@ class BaseService
     protected function auth(): array
     {
         $token = make(RequestInterface::class)->input('token', '');
-        return $token ? $this->redis->hMGet($token, [
-            'id', 'mobile', 'nickname', 'app_id', 'head_url'
-        ]) : [];
+
+        if (!empty($token)) {
+            $auth = $this->redis->hMGet($token, [
+                'id', 'mobile', 'nickname', 'app_id', 'head_url'
+            ]);
+        }
+        return empty($auth) ? [] : $auth;
     }
 }

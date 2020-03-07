@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Service\ChatService;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Contract\RequestInterface;
 
 class ChatController extends BaseController
 {

@@ -141,7 +141,7 @@ class WebSocketService extends BaseService
         //判断用户是否在线
         if ($this->_getServer()->exist($fd)) {
             var_dump($fd);
-            $this->_getServer()->send($fd, json_encode($data));
+            $this->_getServer()->push($fd, json_encode($data));
         } else {
             //离线
 
