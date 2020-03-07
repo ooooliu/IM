@@ -143,8 +143,7 @@ class WebSocketService extends BaseService
             var_dump($fd);
             $this->_getServer()->push($fd, json_encode($data));
         } else {
-            //离线
-
+            //@todo 离线业务
         }
     }
 
