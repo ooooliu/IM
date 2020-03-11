@@ -3,13 +3,13 @@
  * Created by PhpStorm2019.
  * @copyright: 杭州云呼网络科技有限公司
  * @author:    Lyn
- * @date:      2020/2/28
+ * @date:      2020/3/10
  */
 
 namespace App\Model;
 
 
-class BaseModel extends Model
+class MongoModel extends \Jmhc\Mongodb\Eloquent\Model
 {
     /**
      * Base Add One
@@ -108,6 +108,4 @@ class BaseModel extends Model
         return $model->paginate($perPage, $columns, 'page', $page)
             ->toArray();
     }
-
-
 }

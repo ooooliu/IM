@@ -45,7 +45,9 @@
         "ext-redis": "*",
         "phper666/jwt-auth": "^2.0",
         "hyperf/crontab": "^1.1",
-        "hyperf/task": "^1.1"
+        "hyperf/task": "^1.1",
+        "jmhc/mongodb": "dev-master",
+        "hyperf/snowflake": "^1.1"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "^4.2",

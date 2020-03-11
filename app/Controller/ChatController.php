@@ -21,16 +21,5 @@ class ChatController extends BaseController
      */
     protected $chatService;
 
-    /**
-     * 消息发送
-     * @return bool|string
-     */
-    public function sendMessage()
-    {
-        try {
-            return $this->chatService->sendMessage($this->request->all());
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-    }
+
 }
