@@ -66,6 +66,7 @@ class UserService extends BaseService
             'password' => md5('123456'),
             'head_url' => $header_img,
             'app_id' => '200001',
+            'status' => 1,
         ];
         return $this->userMo->addOne($params);
     }

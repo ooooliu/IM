@@ -47,7 +47,8 @@
         "hyperf/crontab": "^1.1",
         "hyperf/task": "^1.1",
         "jmhc/mongodb": "dev-master",
-        "hyperf/snowflake": "^1.1"
+        "hyperf/snowflake": "^1.1",
+        "hyperf/model-cache": "^1.1"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "^4.2",

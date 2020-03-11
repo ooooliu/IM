@@ -33,4 +33,9 @@ class RecordService extends BaseService
         $socket->send($to, $data);
         return true;
     }
+
+    public function addRecord()
+    {
+
+    }
 }

@@ -10,7 +10,7 @@ namespace App\Model;
 
 
 //class UserModel extends Model
-class UserModel extends MongoModel
+class UserModel extends BaseModel
 {
     protected $table = 'users';
 
@@ -26,4 +26,13 @@ class UserModel extends MongoModel
         'updated_at',   //更新时间
     ];
 
+    protected $mongoFields = [
+        'id' => 'int',
+        'mobile' => 'string',
+        'nickname' => 'string',
+        'password' => 'string',
+        'head_url' => 'string',
+        'app_id' => 'int',
+        'status' => 'int'
+    ];
 }
