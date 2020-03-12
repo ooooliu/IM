@@ -10,8 +10,8 @@ namespace App\Controller;
 
 
 use App\Service\ChatService;
+use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
-use Hyperf\HttpServer\Contract\RequestInterface;
 
 class ChatController extends BaseController
 {
@@ -21,5 +21,16 @@ class ChatController extends BaseController
      */
     protected $chatService;
 
-
+    /**
+     *
+     * @return array|string
+     */
+    public function addChat()
+    {
+        try {
+            return $this->chatService->addChat($this->request->all());
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

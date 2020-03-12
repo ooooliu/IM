@@ -9,8 +9,17 @@
 namespace App\Service;
 
 
+use App\Request\RecordRequest;
+use Hyperf\Di\Annotation\Inject;
+
 class RecordService extends BaseService
 {
+    /**
+     * @Inject()
+     * @var RecordRequest
+     */
+    protected $recordRequest;
+
     /**
      * 发送消息
      * @param array $params
@@ -18,6 +27,10 @@ class RecordService extends BaseService
      */
     public function sendMessage(array $params): bool
     {
+        $this->recordRequest->sendMessageValidate($params);
+
+        //两人是否建立聊天关系
+
         /**
          * @todo 消息体解析业务
          */

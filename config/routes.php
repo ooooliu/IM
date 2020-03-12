@@ -42,12 +42,13 @@ Router::addGroup('', function () {
      */
     Router::addGroup('/user/', function () {
         Router::post('login_out', 'App\Controller\UserController@loginOut');
-        Router::get('find_user', 'App\Controller\UserController@findUserById');
+        Router::get('find', 'App\Controller\UserController@findUserById');
     });
     /**
      * Chat
      */
     Router::addGroup('/chat/', function () {
+        Router::post('add', 'App\Controller\ChatController@addChat');
         Router::post('send_msg', 'App\Controller\ChatController@sendMessage');
     });
 }, ['middleware' => [App\Middleware\AuthMiddleware::class]]);

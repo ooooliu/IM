@@ -14,20 +14,11 @@ use App\Exception\UserException;
 
 class UserRequest extends BaseRequest
 {
-    //id验证规则
-    protected $id = 'bail|required|integer|min:1';
-
-    //手机号码验证规则
-    protected $mobile = 'bail|required|max:11';
-
     //用户昵称验证规则
     protected $nickname = 'bail|required|max:64';
 
     //用户密码验证规则
     protected $password = 'bail|required|max:24';
-
-    //请求来源验证规则
-    protected $app_id = 'bail|required|integer|min:1';
 
     /**
      * 用户注册验证
@@ -64,6 +55,10 @@ class UserRequest extends BaseRequest
         }
     }
 
+    /**
+     * 根据用户id获取用户信息验证
+     * @param array $params
+     */
     public function findUserByIdValidate(array $params): void
     {
         $validator = $this->validationFactory->make($params, [

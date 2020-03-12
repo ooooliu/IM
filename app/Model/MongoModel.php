@@ -9,7 +9,6 @@
 namespace App\Model;
 
 
-use Hyperf\Database\Model\SoftDeletes;
 use Hyperf\ModelCache\Cacheable;
 use Hyperf\ModelCache\CacheableInterface;
 use Hyperf\Snowflake\IdGenerator\SnowflakeIdGenerator;
@@ -17,7 +16,6 @@ use Hyperf\Snowflake\IdGenerator\SnowflakeIdGenerator;
 class MongoModel extends \Jmhc\Mongodb\Eloquent\Model implements CacheableInterface
 {
     use Cacheable;
-    use SoftDeletes;
 
     /**
      * mongo定义类型字段,进行类型转换
@@ -118,14 +116,14 @@ class MongoModel extends \Jmhc\Mongodb\Eloquent\Model implements CacheableInterf
 
     /**
      * Base Find One
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @return array
      */
-    public function findOne(array $params, array $columns = ['*']): array
+    public function findOne(array $where, array $columns = ['*']): array
     {
         $model = self::query()
-            ->where($this->_typeForMongo($params))
+            ->where($this->_typeForMongo($where))
             ->first($columns);
 
         return $model ? $model->toArray() : [];
@@ -133,15 +131,15 @@ class MongoModel extends \Jmhc\Mongodb\Eloquent\Model implements CacheableInterf
 
     /**
      * Base Find All
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @return array
      */
-    public function findAll(array $params = [], array $columns = ['*']): array
+    public function findAll(array $where = [], array $columns = ['*']): array
     {
         $model = self::query();
-        if (!empty($params)) {
-            $model->where($this->_typeForMongo($params));
+        if (!empty($where)) {
+            $model->where($this->_typeForMongo($where));
         }
         return $model->get($columns)->toArray();
     }
@@ -161,17 +159,17 @@ class MongoModel extends \Jmhc\Mongodb\Eloquent\Model implements CacheableInterf
 
     /**
      * Base Find Paginate
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @param int $perPage
      * @param int $page
      * @return mixed
      */
-    public function findPaginate(array $params = [], array $columns = ['*'], int $perPage = 20, int $page = 1): array
+    public function findPaginate(array $where = [], array $columns = ['*'], int $perPage = 20, int $page = 1): array
     {
         $model = self::query();
-        if (!empty($params)) {
-            $model->where($this->_typeForMongo($params));
+        if (!empty($where)) {
+            $model->where($this->_typeForMongo($where));
         }
         return $model->paginate($perPage, $columns, 'page', $page)
             ->toArray();

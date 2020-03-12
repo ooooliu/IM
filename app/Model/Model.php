@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace App\Model;
 
 
-use Hyperf\Database\Model\SoftDeletes;
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;
 use Hyperf\ModelCache\CacheableInterface;
@@ -22,7 +21,6 @@ use Hyperf\Snowflake\IdGenerator\SnowflakeIdGenerator;
 class Model extends BaseModel implements CacheableInterface
 {
     use Cacheable;
-    use SoftDeletes;
 
     /**
      * 获取id
@@ -64,6 +62,24 @@ class Model extends BaseModel implements CacheableInterface
     }
 
     /**
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function addAll(array $params): bool
+    {
+        foreach ($params as $key => $value) {
+            if (!is_array($value))
+                continue;
+
+            if (!isset($value['id'])) {
+                $params[$key]['id'] = $this->_getId();
+            }
+        }
+        return self::query()->insert($params);
+    }
+
+    /**
      * Base Update One By Where
      * @param array $where
      * @param array $values
@@ -90,14 +106,14 @@ class Model extends BaseModel implements CacheableInterface
 
     /**
      * Base Find One
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @return array
      */
-    public function findOne(array $params, array $columns = ['*']): array
+    public function findOne(array $where, array $columns = ['*']): array
     {
         $model = self::query()
-            ->where($params)
+            ->where($where)
             ->first($columns);
 
         return $model ? $model->toArray() : [];
@@ -105,15 +121,15 @@ class Model extends BaseModel implements CacheableInterface
 
     /**
      * Base Find All
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @return array
      */
-    public function findAll(array $params = [], array $columns = ['*']): array
+    public function findAll(array $where = [], array $columns = ['*']): array
     {
         $model = self::query();
-        if (!empty($params)) {
-            $model->where($params);
+        if (!empty($where)) {
+            $model->where($where);
         }
         return $model->get($columns)->toArray();
     }
@@ -133,17 +149,17 @@ class Model extends BaseModel implements CacheableInterface
 
     /**
      * Base Find Paginate
-     * @param array $params
+     * @param array $where
      * @param array $columns
      * @param int $perPage
      * @param int $page
      * @return mixed
      */
-    public function findPaginate(array $params = [], array $columns = ['*'], int $perPage = 20, int $page = 1): array
+    public function findPaginate(array $where = [], array $columns = ['*'], int $perPage = 20, int $page = 1): array
     {
         $model = self::query();
-        if (!empty($params)) {
-            $model->where($params);
+        if (!empty($where)) {
+            $model->where($where);
         }
         return $model->paginate($perPage, $columns, 'page', $page)
             ->toArray();
