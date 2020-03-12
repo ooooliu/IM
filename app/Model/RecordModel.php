@@ -9,7 +9,7 @@
 namespace App\Model;
 
 
-class RecordModel extends BaseModel
+class RecordModel extends MongoModel
 {
     protected $table = 'records';
 

@@ -9,7 +9,7 @@
 namespace App\Model;
 
 
-class UserModel extends BaseModel
+class UserModel extends MongoModel
 {
     protected $table = 'users';
 
