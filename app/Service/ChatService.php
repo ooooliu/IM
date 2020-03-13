@@ -96,10 +96,19 @@ class ChatService extends BaseService
      * @param int $to_id
      * @return array
      */
-    public function getChatIdByMembers(int $from_id, int $to_id): array
+    public function getChatByMembers(int $from_id, int $to_id): array
     {
         $this->chatRequest->findChatValidate($from_id, $to_id);
 
-        return $this->chatMo->getChatIdByMembers($from_id, $to_id);
+        return $this->chatMo->getChatByMembers($from_id, $to_id);
+    }
+
+    /**
+     * 根据用户id获取用户聊天室信息
+     * @return array
+     */
+    public function getChatList()
+    {
+        return $this->chatMo->getChatByUserId($this->auth()['id']);
     }
 }

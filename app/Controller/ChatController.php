@@ -33,4 +33,32 @@ class ChatController extends BaseController
             return $e->getMessage();
         }
     }
+
+    /**
+     * 获取用户聊天室信息
+     * @return array|string
+     */
+    public function getChat()
+    {
+        try {
+            return $this->chatService->getChatList();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     *
+     * @return array|string
+     */
+    public function getChatMembers()
+    {
+        $from_id = $this->request->input('from_id');
+        $to_id = $this->request->input('to_id');
+        try {
+            return $this->chatService->getChatByMembers($from_id, $to_id);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

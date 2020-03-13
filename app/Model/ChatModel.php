@@ -39,18 +39,41 @@ class ChatModel extends Model
 
     /**
      * 获取单聊用户的聊天室信息
-     * @param  $user_ids
+     * @param int $from_id
+     * @param int $to_id
      * @return array
      */
-    public function getChatIdByMembers(...$user_ids): array
+    public function getChatByMembers(int $from_id, int $to_id): array
     {
-        $chat = self::query()->leftJoin('chat_members', 'chat_members.chat_id', '=', 'chats.id')
+        $chat = self::query()
+            ->leftJoin('chat_members AS ca', 'ca.chat_id', '=', 'chats.id')
+            ->leftJoin('chat_members AS cb', 'cb.chat_id', '=', 'chats.id')
             ->where([
                 'chats.type' => 0,
                 'chats.status' => 1,
-            ])->whereIn('chat_members.user_id', $user_ids)
+            ])->where([
+                'ca.user_id' => $from_id,
+                'cb.user_id' => $to_id,
+            ])
             ->first();
 
         return $chat ? $chat->toArray() : [];
+    }
+
+    /**
+     * 根据用户id获取用户聊天室信息
+     * @param int $user_id
+     * @return array
+     */
+    public function getChatByUserId(int $user_id): array
+    {
+        return self::query()
+            ->leftJoin('chat_members', 'chat_members.chat_id', '=', 'chats.id')
+            ->where([
+                'chats.type' => 0,
+                'chats.status' => 1,
+            ])->where('chat_members.user_id', $user_id)
+            ->orderByDesc('chats.update_at')
+            ->get()->toArray();
     }
 }

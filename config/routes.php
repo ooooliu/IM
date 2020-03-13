@@ -49,6 +49,8 @@ Router::addGroup('', function () {
      */
     Router::addGroup('/chat/', function () {
         Router::post('add', 'App\Controller\ChatController@addChat');
+        Router::get('get', 'App\Controller\ChatController@getChat');
+        Router::get('get_chat', 'App\Controller\ChatController@getChatMembers');
         Router::post('send_msg', 'App\Controller\ChatController@sendMessage');
     });
 }, ['middleware' => [App\Middleware\AuthMiddleware::class]]);
