@@ -65,9 +65,11 @@ class WebSocketService extends BaseService
         //记录用户fd
         $fdUserKey = $this->fdUserKey();
         $this->redis->hSet($fdUserKey, $fdUserKey . '_' . $user['id'], $fd);
+        $this->redis->expire($fdUserKey, (int)env('EXPIRY_TIME'));
         //建立fd映射关系
         $fdKey = $this->fdKey();
         $this->redis->hSet($fdKey, $fdKey . '_' . $fd, json_encode($user));
+        $this->redis->expire($fdKey, (int)env('EXPIRY_TIME'));
         return true;
     }
 
