@@ -34,7 +34,7 @@ class RecordService extends BaseService
      * @Inject()
      * @var RecordModel
      */
-    protected $record;
+    protected $recordMo;
 
     /**
      * 发送消息
@@ -78,11 +78,32 @@ class RecordService extends BaseService
      */
     public function addRecord(array $params): array
     {
-        return $this->record->addOne([
+        return $this->recordMo->addOne([
             'chat_id' => $params['chat_id'] ?? 0,
             'from_id' => $params['from_id'] ?? 0,
             'type' => $params['type'] ?? 'text',
             'msg' => $params['msg'] ?? '',
         ]);
+    }
+
+    /**
+     * 获取聊天记录
+     * @param int $chat_id
+     * @param array $params
+     * @return array
+     */
+    public function getRecord(int $chat_id, array $params): array
+    {
+        $where = [
+            'chat_id' => $chat_id,
+            'status' => 0
+        ];
+        if (isset($params['from_id'])) {
+            $where['from_id'] = $params['from_id'];
+        }
+        if (isset($params['type'])) {
+            $where['type'] = $params['type'];
+        }
+        return $this->recordMo->findAll($where);
     }
 }

@@ -107,8 +107,66 @@ class ChatService extends BaseService
      * 根据用户id获取用户聊天室信息
      * @return array
      */
-    public function getChatList()
+    public function getChatList(): array
     {
         return $this->chatMo->getChatByUserId($this->auth()['id']);
     }
+
+    /**
+     * 更新聊天室信息
+     * @param array $params
+     * @return bool
+     */
+    public function updateChat(array $params): bool
+    {
+        $where = [
+            'id' => $params['chat_id'] ?? 0
+        ];
+        if (isset($params['chat_name'])) {
+            $value['chat_name'] = $params['chat_name'];
+        }
+        if (isset($params['avatar'])) {
+            $value['avatar'] = $params['avatar'];
+        }
+        if (isset($params['info'])) {
+            $value['info'] = $params['info'];
+        }
+        if (!empty($value)) {
+            $this->chatMo->updateOne($where, $value);
+        }
+        return true;
+    }
+
+    /**
+     * 删除聊天室
+     * @param array $params
+     * @return bool
+     */
+    public function deleteChat(array $params): bool
+    {
+        $this->chatMo->updateOne([
+            'id' => $params['chat_id'] ?? 0
+        ], [
+            'status' => 0
+        ]);
+        return true;
+    }
+
+    /**
+     * 更新用户消息已读时间
+     * @param int $chat_id
+     * @param int $user_id
+     * @return bool
+     */
+    public function readMessage(int $chat_id, int $user_id): bool
+    {
+        $this->chatMemberMo->updateOne([
+            'chat_id' => $chat_id,
+            'user_id' => $user_id,
+        ], [
+            'read_time' => date('Y-m-d H:i:s')
+        ]);
+        return true;
+    }
+
 }

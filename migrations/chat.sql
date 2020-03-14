@@ -26,7 +26,8 @@ CREATE TABLE `im_chats` (
     `extends` VARCHAR ( 512 ) NOT NULL DEFAULT '' COMMENT '扩展字段',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY ( `id` )
+    PRIMARY KEY ( `id` ),
+    KEY `INDEX_CREATOR_ID` (`creator_id`) USING BTREE
 ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin;
 
 
@@ -41,7 +42,8 @@ CREATE TABLE `im_chat_members` (
    `extends` VARCHAR ( 256 ) NOT NULL DEFAULT '' COMMENT '扩展字段',
    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   PRIMARY KEY ( `id` )
+   PRIMARY KEY ( `id` ),
+   UNIQUE KEY `INDEX_CHAT` (`chat_id`,`user_id`) USING BTREE
 ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin;
 
 
@@ -56,5 +58,6 @@ CREATE TABLE `im_records` (
     `extends` VARCHAR ( 256 ) NOT NULL DEFAULT '' COMMENT '扩展字段',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY ( `id` )
+    PRIMARY KEY ( `id` ),
+    KEY `INDEX_CHAT` (`chat_id`,`from_id`) USING BTREE
 ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin;
