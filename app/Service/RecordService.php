@@ -57,7 +57,16 @@ class RecordService extends BaseService
 
         $socket = make(WebSocketService::class);
         foreach ($member as $value) {
-            $socket->send($value['user_id'], $msg);
+            $res = $socket->send($value['user_id'], $msg);
+            if ($res) {
+                //异步保存聊天信息
+                go($this->addRecord([
+                    'chat_id' => $chat_id,
+                    'from_id' => $user_id,
+                    'type' => 'text',
+                    'msg' => $msg,
+                ]));
+            }
         }
         return true;
     }
