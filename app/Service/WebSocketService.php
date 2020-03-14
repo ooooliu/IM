@@ -132,19 +132,21 @@ class WebSocketService extends BaseService
     /**
      * 定向发送消息
      * @param int $to 接收者
-     * @param array $data 消息体数据
+     * @param string $data 消息体数据
+     * @return bool
      */
-    public function send(int $to, array $data): void
+    public function send(int $to, string $data): bool
     {
         $fd = $this->getFd($to);
-
         //判断用户是否在线
         if ($this->_getServer()->exist($fd)) {
             var_dump($fd);
-            $this->_getServer()->push($fd, json_encode($data));
+            $res = $this->_getServer()->push($fd, $data);
         } else {
             //@todo 离线业务
+            $res = false;
         }
+        return $res;
     }
 
     /**

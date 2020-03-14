@@ -31,4 +31,8 @@ class ChatErrorCode extends BaseErrorCode
      */
     const ADD_CHAT_MEMBER_FAIL = 40003;
 
+    /**
+     * @Message("聊天不存在")
+     */
+    const CHAT_IS_NULL = 40004;
 }

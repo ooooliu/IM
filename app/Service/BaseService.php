@@ -33,11 +33,20 @@ class BaseService
     {
         $token = make(RequestInterface::class)->input('token', '');
 
+        $auth = [];
         if (!empty($token)) {
             $auth = $this->redis->hMGet($token, [
                 'id', 'mobile', 'nickname', 'app_id', 'head_url'
             ]);
+            if (!empty($auth)) {
+                $int = ['id', 'app_id'];
+                foreach ($auth as $key => $value) {
+                    if (in_array($key, $int)) {
+                        $auth[$key] = (int)$value;
+                    }
+                }
+            }
         }
-        return empty($auth) ? [] : $auth;
+        return $auth;
     }
 }

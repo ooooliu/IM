@@ -26,8 +26,10 @@ class RecordController extends BaseController
      */
     public function sendMessage()
     {
+        $chat_id = $this->request->input('chat_id', 0);
+        $msg = $this->request->input('msg', '');
         try {
-            return $this->recordService->sendMessage($this->request->all());
+            return $this->recordService->sendMessageText($chat_id, $msg);
         } catch (\Exception $e) {
             return $e->getMessage();
         }

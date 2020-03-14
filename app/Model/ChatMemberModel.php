@@ -34,4 +34,18 @@ class ChatMemberModel extends Model
         'status' => 'int',
         'extends' => 'string',
     ];
+
+    /**
+     * 获取除user_id外其他用户
+     * @param int $chat_id
+     * @param int $user_id
+     * @return array
+     */
+    public function getOtherMember(int $chat_id, int $user_id): array
+    {
+        return self::query()->where('chat_id', $chat_id)
+            ->where('user_id', '!=', $user_id)
+            ->where('status', 1)
+            ->get()->toArray();
+    }
 }

@@ -10,7 +10,6 @@ namespace App\Controller;
 
 
 use App\Service\ChatService;
-use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
 
 class ChatController extends BaseController

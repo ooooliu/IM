@@ -24,8 +24,7 @@ class RecordRequest extends BaseRequest
     public function sendMessageValidate(array $params): void
     {
         $validator = $this->validationFactory->make($params, [
-            'from_id' => $this->id,
-            'to_id' => $this->id,
+            'chat_id' => $this->id,
             'msg' => $this->msg
         ]);
 

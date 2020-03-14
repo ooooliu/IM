@@ -9,6 +9,10 @@
 namespace App\Service;
 
 
+use App\Constants\ChatErrorCode;
+use App\Exception\ChatException;
+use App\Model\ChatMemberModel;
+use App\Model\RecordModel;
 use App\Request\RecordRequest;
 use Hyperf\Di\Annotation\Inject;
 
@@ -21,34 +25,55 @@ class RecordService extends BaseService
     protected $recordRequest;
 
     /**
+     * @Inject()
+     * @var ChatMemberModel
+     */
+    protected $chatMember;
+
+    /**
+     * @Inject()
+     * @var RecordModel
+     */
+    protected $record;
+
+    /**
      * 发送消息
-     * @param array $params
+     * @param int $chat_id
+     * @param $msg
      * @return bool
      */
-    public function sendMessage(array $params): bool
+    public function sendMessageText(int $chat_id, string $msg): bool
     {
-        $this->recordRequest->sendMessageValidate($params);
+        $this->recordRequest->sendMessageValidate([
+            'chat_id' => $chat_id,
+            'msg' => $msg,
+        ]);
+        $user_id = $this->auth()['id'];
+        //获取chat成员
+        $member = $this->chatMember->getOtherMember($chat_id, $user_id);
+        if (empty($member)) {
+            throw new ChatException(ChatErrorCode::CHAT_IS_NULL);
+        }
 
-        //两人是否建立聊天关系
-
-        /**
-         * @todo 消息体解析业务
-         */
-        $to = $params['fd'] ?? 0;
-        $data = [
-            'from_id' => $params['from_id'],
-            'to_id' => $params['to_id'],
-            'msg' => $params['msg'],
-            'type' => 'text',
-            'ext' => []
-        ];
         $socket = make(WebSocketService::class);
-        $socket->send($to, $data);
+        foreach ($member as $value) {
+            $socket->send($value['user_id'], $msg);
+        }
         return true;
     }
 
-    public function addRecord()
+    /**
+     * 添加消息记录
+     * @param array $params
+     * @return array
+     */
+    public function addRecord(array $params): array
     {
-
+        return $this->record->addOne([
+            'chat_id' => $params['chat_id'] ?? 0,
+            'from_id' => $params['from_id'] ?? 0,
+            'type' => $params['type'] ?? 'text',
+            'msg' => $params['msg'] ?? '',
+        ]);
     }
 }
