@@ -50,7 +50,7 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
      * @param WebSocketServer $server
      * @param Frame $frame
      */
-    public function onMessage(WebSocketServer $server, Frame $frame): void
+    public function onMessage($server, Frame $frame): void
     {
         var_dump($frame);
         $this->socket->onMessageDemo($frame);
@@ -62,7 +62,7 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
      * @param int $fd
      * @param int $reactorId
      */
-    public function onClose(Server $server, int $fd, int $reactorId): void
+    public function onClose($server, int $fd, int $reactorId): void
     {
         var_dump('closed');
         //注销用户
@@ -74,7 +74,7 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
      * @param WebSocketServer $server
      * @param Request $request
      */
-    public function onOpen(WebSocketServer $server, Request $request): void
+    public function onOpen($server, Request $request): void
     {
         $this->socket->onOpen($request);
     }
